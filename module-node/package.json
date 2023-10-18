@@ -1,0 +1,19 @@
+{
+  "name": "module-node",
+  "version": "0.0.1",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "test": "vitest",
+    "test:ci": "vitest run --reporter=junit --outputFile=junit.xml"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "18.2.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "eslint": "^8.51.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
+  }
+}

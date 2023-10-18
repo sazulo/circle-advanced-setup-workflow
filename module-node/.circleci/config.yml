@@ -1,0 +1,33 @@
+# Config dedicated for module node
+# All the resources must be prefixed with `module-a-` to avoid conflicts
+
+version: 2.1
+
+orbs:
+  node: circleci/node@5.1.0
+
+jobs:
+  test:
+    executor:
+        name: node/default
+        tag: '18.18'
+    parameters:
+      app-dir:
+        default: '~/project/module-node'
+        type: string
+    steps:
+      - checkout
+      - node/install-packages:
+          app-dir: << parameters.app-dir >>
+      - run:
+          command: cd << parameters.app-dir >> && npm run test:ci
+      - store_test_results:
+          path: << parameters.app-dir >>
+
+workflows:
+  test_module_node:
+    jobs:
+      - test
+
+
+      

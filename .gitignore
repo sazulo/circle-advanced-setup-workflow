@@ -1,0 +1,6 @@
+# Tests
+junit.xml
+
+# NodeJS
+node_modules
+dist
