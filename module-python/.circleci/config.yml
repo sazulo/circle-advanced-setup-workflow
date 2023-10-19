@@ -1,27 +1,39 @@
-# Config dedicated for module C
-# All the resources must be prefixed with `module-c-` to avoid conflicts
+# Config dedicated for module B
+# All the resources must be prefixed with `module-b-` to avoid conflicts
 
 version: 2.1
 
-orbs:
-  module-c-hello-build: circleci/hello-build@0.0.14
-
 jobs:
-  module-c-build:
+  test:
     docker:
-      - image: alpine
+      - image: cimg/python:3.11
+    parameters:
+      app-dir:
+        default: '~/project/module-python'
+        type: string
+      reports-dir: 
+        default: '~/project/module-python/dist/reports'
+        type: string
     steps:
-      - common-say-hello:
-          to: C
-      - run: echo 'Hello world from module C! :3'
+      - checkout
+      - run: 
+          name: Show python version
+          command: python --version
+      - run:
+          name: Install PDM
+          command: pip install --user pdm
+      - run:
+          name: Download Dependencies
+          command: cd << parameters.app-dir >> && pdm install
+      - run: 
+          name: Unit Testing
+          command: cd << parameters.app-dir >> && pdm run test
+      - store_test_results: 
+          path: << parameters.reports-dir >>
 
 workflows:
-  module-c-workflow:
+  module_python_test:
     jobs:
-      - common-pre
-      - module-c-build:
-          requires:
-            - common-pre
-      - module-c-hello-build/hello-build:
-          requires:
-            - common-pre
+      - test
+
+
