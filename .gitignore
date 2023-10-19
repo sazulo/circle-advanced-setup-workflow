@@ -1,6 +1,9 @@
 # Tests
 junit.xml
 
+# Java
+target
+
 # NodeJS
 node_modules
 dist
