@@ -11,7 +11,7 @@ public class SumServiceTest {
     @DisplayName("1 + 1 = 2")
     void addOneAndOne() {
         var sumService = new SumService();
-        assertEquals(2, sumService.sum(1, 2));
+        assertEquals(2, sumService.sum(1, 1));
     }
 
     @Test
