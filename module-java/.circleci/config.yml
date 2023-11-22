@@ -21,13 +21,34 @@ jobs:
           command: cd << parameters.app-dir >> && ./mvnw test
       - store_test_results: 
           path: << parameters.app-dir >>/target/surefire-reports
-  publish-module:
+  update-module-version:
     docker:
       - image: cimg/openjdk:21.0.0
+    parameters:
+      app-dir:
+        default: '~/project/module-java'
+        type: string
+      publish-module-version:
+        type: string
+        default: ""
     steps:
       - run:
-          name: "Publish"
-          command: "echo publish"
+          name: "Update Version"
+          command: |
+            mvn versions:set -DnewVersion=<< parameters.publish-module-version >>
+      - run:
+          name: "Commit changes"
+          command: |
+            PUBLISHED_MODULE=<< parameters.parameters.publish-module >>
+            git commit --all -m "chore: Preparing $PUBLISHED_MODULE for publication"
+            git tag -a << parameters.publish-module >>/<< parameters.published-module-version >>
+            git push
+            gut push origin << parameters.publish-module >>/<< parameters.published-module-version >>
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - << parameters.app-dir >>
 
 workflows:
   module_java_test:
@@ -40,7 +61,8 @@ workflows:
       equal: [ module-java, << pipeline.parameters.publish-module >> ]
     jobs:
       - test
-      - publish-module
+      - update-module-version
+      - 
 
 
 
