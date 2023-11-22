@@ -3,6 +3,16 @@
 
 version: 2.1
 
+parameters:
+  publish-module:
+    description: Publish a specific module
+    type: string
+    default: ""
+  publish-module-version:
+    description: Version to publish the module
+    type: string
+    default: ""
+
 jobs:
   test:
     docker:
@@ -64,7 +74,7 @@ workflows:
     jobs:
       - test
       - update-module-version:
-          publish-module-version:  << pipeline.parameters.publish-module-version >>
+          publish-module-version: << pipeline.parameters.publish-module-version >>
           publish-module: << pipeline.parameters.publish-module >>
 
 
