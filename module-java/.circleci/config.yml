@@ -21,10 +21,26 @@ jobs:
           command: cd << parameters.app-dir >> && ./mvnw test
       - store_test_results: 
           path: << parameters.app-dir >>/target/surefire-reports
+  publish-module:
+    docker:
+      - image: cimg/openjdk:21.0.0
+    steps:
+      - run:
+          name: "Publish"
+          command: "echo publish"
 
 workflows:
   module_java_test:
+    when:
+      not: << pipeline.parameters.publish-module >>
     jobs:
       - test
+  publish_module_java:
+    when:
+      equal: [ module-java, << pipeline.parameters.publish-module >> ]
+    jobs:
+      - test
+      - publish-module
+
 
 

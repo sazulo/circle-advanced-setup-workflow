@@ -7,3 +7,5 @@ target
 # NodeJS
 node_modules
 dist
+
+.history
