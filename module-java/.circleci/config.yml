@@ -48,6 +48,7 @@ jobs:
       - run:
           name: "Update Version"
           command: |
+            cd << parameters.app-dir >>
             mvn versions:set -DnewVersion=<< parameters.publish-module-version >>
       - run:
           name: "Commit changes"
@@ -75,6 +76,8 @@ workflows:
       - update-module-version:
           publish-module-version: << pipeline.parameters.publish-module-version >>
           publish-module: << pipeline.parameters.publish-module >>
+          requires: 
+            - test
 
 
 
