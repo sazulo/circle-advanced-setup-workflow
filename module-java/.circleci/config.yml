@@ -14,6 +14,21 @@ parameters:
     default: ""
 
 jobs:
+  checkout:
+    docker:
+      - image: cimg/openjdk:21.0.0
+    steps:
+      - checkout
+      - run: 
+          name: Show java version
+          command: java --version
+      # Adding downloaded source code to workspace 
+      # in order to pass it to other jobs and
+      # prevent having to download it again
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
   test:
     docker:
       - image: cimg/openjdk:21.0.0
@@ -22,10 +37,8 @@ jobs:
         default: '~/project/module-java'
         type: string
     steps:
-      - checkout
-      - run: 
-          name: Show java version
-          command: java --version
+      - attach_workspace:
+          at: .
       - run: 
           name: Unit Testing
           command: cd << parameters.app-dir >> && ./mvnw test
@@ -45,6 +58,8 @@ jobs:
         type: string
         default: ""
     steps:
+      - attach_workspace:
+          at: .
       - run:
           name: "Update Version"
           command: |
