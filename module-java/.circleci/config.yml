@@ -36,7 +36,7 @@ jobs:
       - image: cimg/openjdk:21.0.0
     parameters:
       app-dir:
-        default: 'project/module-java'
+        default: 'module-java'
         type: string
       publish-module-version:
         type: string
