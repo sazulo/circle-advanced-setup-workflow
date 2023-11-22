@@ -31,6 +31,9 @@ jobs:
       publish-module-version:
         type: string
         default: ""
+      publish-module:
+        type: string
+        default: ""
     steps:
       - run:
           name: "Update Version"
@@ -44,7 +47,6 @@ jobs:
             git tag -a << parameters.publish-module >>/<< parameters.published-module-version >>
             git push
             gut push origin << parameters.publish-module >>/<< parameters.published-module-version >>
-
       - persist_to_workspace:
           root: .
           paths:
@@ -61,8 +63,10 @@ workflows:
       equal: [ module-java, << pipeline.parameters.publish-module >> ]
     jobs:
       - test
-      - update-module-version
-      - 
+      - update-module-version:
+          publish-module-version:  << pipeline.parameters.publish-module-version >>
+          publish-module: << pipeline.parameters.publish-module >>
+
 
 
 
