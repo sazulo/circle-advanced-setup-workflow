@@ -82,12 +82,18 @@ workflows:
     when:
       not: << pipeline.parameters.publish-module >>
     jobs:
-      - test
+      - checkout
+      - test:
+          requires:
+            - checkout
   publish_module_java:
     when:
       equal: [ module-java, << pipeline.parameters.publish-module >> ]
     jobs:
-      - test
+      - checkout
+      - test:
+          requires:
+            - checkout
       - update-module-version:
           publish-module-version: << pipeline.parameters.publish-module-version >>
           publish-module: << pipeline.parameters.publish-module >>
