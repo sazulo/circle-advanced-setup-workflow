@@ -52,8 +52,7 @@ jobs:
       - run:
           name: "Commit changes"
           command: |
-            PUBLISHED_MODULE=<< parameters.parameters.publish-module >>
-            git commit --all -m "chore: Preparing $PUBLISHED_MODULE for publication"
+            git commit --all -m "chore: Preparing for publication"
             git tag -a << parameters.publish-module >>/<< parameters.publish-module-version >>
             git push
             gut push origin << parameters.publish-module >>/<< parameters.publish-module-version >>
